@@ -152,7 +152,7 @@ app.post('/api/transactions', async (req, res) => {
             quantity: quantity
         });
 
-        // อัปเดตสต๊อกในตาราง products
+        //อัปเดตสต๊อกในตาราง products
         await conn.query('UPDATE products SET stock = ? WHERE id = ?', [newStock, product_id]);
         
         await conn.query('COMMIT');
@@ -166,6 +166,21 @@ app.post('/api/transactions', async (req, res) => {
         await conn.query('ROLLBACK');
         console.error('Error handling transaction:', error);
         res.status(500).json({ message: 'Error handling transaction' });
+    }
+});
+app.get('/api/transactions', async (req, res) => {
+    try {
+        const sql = `
+            SELECT t.*, p.name AS product_name 
+            FROM transactions t
+            LEFT JOIN products p ON t.product_id = p.id
+            ORDER BY t.transaction_date DESC
+        `;
+        const [results] = await conn.query(sql);
+        res.json(results);
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        res.status(500).json({ message: 'Error fetching transactions' });
     }
 });
 
