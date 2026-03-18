@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ระบบสต๊อกสินค้าและรายงาน</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
+        .box { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background: #eee; }
+        button { padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>📦 ระบบจัดการสต๊อกสินค้า</h1>
+
+    <div class="box">
+        <h3>บันทึกรายการ (In/Out)</h3>
+        รหัสสินค้า (ID): <input type="number" id="p_id" style="width: 60px;">
+        ประเภท: 
+        <select id="p_type">
+            <option value="IN">รับเข้า (IN)</option>
+            <option value="OUT">เบิกออก (OUT)</option>
+        </select>
+        จำนวน: <input type="number" id="p_qty" style="width: 60px;">
+        <button onclick="saveTransaction()">บันทึก</button>
+    </div>
+
+    <div class="box">
+        <h3>⚠️ สินค้าใกล้หมด (Low Stock)</h3>
+        <table>
+            <tr><th>ID</th><th>ชื่อสินค้า</th><th>สต๊อกปัจจุบัน</th><th>จุดสั่งซื้อ (Min)</th></tr>
+            <tbody id="tb-low-stock"></tbody>
+        </table>
+    </div>
+
+    <div class="box">
+        <h3>📅 รายงานยอดรวมรายวัน (วันนี้)</h3>
+        <table>
+            <tr><th>วันที่</th><th>ประเภท</th><th>จำนวนรวม</th></tr>
+            <tbody id="tb-daily"></tbody>
+        </table>
+    </div>
+
+    <div class="box">
+        <h3>📊 รายงานยอดรวมรายเดือน (ปีนี้)</h3>
+        <table>
+            <tr><th>เดือน</th><th>ปี</th><th>ประเภท</th><th>จำนวนรวม</th></tr>
+            <tbody id="tb-monthly"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const API = "http://localhost:3000";
+
+        function saveTransaction() {
+            const data = {
+                product_id: document.getElementById('p_id').value,
+                type: document.getElementById('p_type').value,
+                quantity: document.getElementById('p_qty').value
+            };
+
+            fetch(API + "/transaction", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(result => {
+                alert(result.message || "บันทึกสำเร็จ");
+                loadAllData();
+            });
+        }
+
+        function loadAllData() {
+            fetch(API + "/low-stock").then(res => res.json()).then(data => {
+                let html = data.map(i => `<tr><td>${i.id}</td><td>${i.name}</td><td style="color:red; font-weight:bold;">
+                    ${i.current_stock}</td><td>${i.min_stock}</td></tr>`).join('');
+                document.getElementById('tb-low-stock').innerHTML = html || "<tr><td colspan='4'>ไม่มีสินค้าใกล้หมด</td></tr>";
+            });
+
+            fetch(API + "/report/daily").then(res => res.json()).then(data => {
+                let html = data.map(i => `<tr><td>${i.date.split('T')[0]}</td><td>${i.type}</td><td>${i.total_qty}</td></tr>`).join('');
+                document.getElementById('tb-daily').innerHTML = html || "<tr><td colspan='3'>ไม่มีรายการวันนี้</td></tr>";
+            });
+
+            fetch(API + "/report/monthly").then(res => res.json()).then(data => {
+                let html = data.map(i => `<tr><td>${i.month}</td><td>${i.year}</td><td>${i.type}</td><td>${i.total_qty}</td></tr>`).join('');
+                document.getElementById('tb-monthly').innerHTML = html || "<tr><td colspan='4'>ไม่มีรายการในเดือนนี้</td></tr>";
+            });
+        }
+
+        loadAllData();
+    </script>
+</body>
+</html>
