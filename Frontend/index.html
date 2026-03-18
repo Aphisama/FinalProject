@@ -33,18 +33,17 @@
 
     <h2>รายการสินค้าคงเหลือ</h2>
     <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>ชื่อสินค้า</th>
-                <th>สต๊อก (Stock)</th>
-                <th>แจ้งเตือน (Min)</th>
-                <th>สถานะ</th>
-                <th>จัดการ</th>
-            </tr>
-        </thead>
+    <thead>
+        <tr>
+            <th>ลำดับ</th>  <th>ชื่อสินค้า</th>
+            <th>สต๊อก (Stock)</th>
+            <th>แจ้งเตือน (Min)</th>
+            <th>สถานะ</th>
+            <th>จัดการ</th>
+        </tr>
+    </thead>
         <tbody id="productTable">
-            <tr><td colspan="6">กำลังโหลดข้อมูล...</td></tr>
+            <tr><td colspan="6">กำลังโหลดข้อมูล</td></tr>
         </tbody>
     </table>
 </div>
@@ -69,7 +68,7 @@
                 return;
             }
 
-            products.forEach(p => {
+            products.forEach((p, index) => {
                 let statusText = "มีสินค้า";
                 let rowClass = "";
                 
@@ -101,14 +100,14 @@
             if (outOfStock.length > 0) {
                 alertHtml += `
                     <div class="alert-box alert-danger">
-                         <b>สินค้าหมดStock กรุณาสั่งเพิ่ม :</b> ${outOfStock.join(', ')}
+                        <b>สินค้าหมดStock กรุณาสั่งเพิ่ม :</b> ${outOfStock.join(', ')}
                     </div>
                 `;
             }
             if (lowStock.length > 0) {
                 alertHtml += `
                     <div class="alert-box alert-warning">
-                        <b>สินค้าใกล้หมด:</b> ${lowStock.join(', ')}
+                        <b>สินค้าใกล้หมด :</b> ${lowStock.join(', ')}
                     </div>
                 `;
             }
@@ -189,7 +188,6 @@
             alert('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้');
         }
     }
-
     loadProducts();
 </script>
 </body>
