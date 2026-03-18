@@ -130,9 +130,7 @@ tr:nth-child(even) {
     background-color: #fff3cd;
     border-color: #ffeeba;
 }
-/* =========================================
-   ส่วนที่เพิ่มใหม่: ตกแต่งรายงานสรุปยอดขาย
-   ========================================= */
+
 .summary-cards {
     display: flex;
     gap: 20px;
