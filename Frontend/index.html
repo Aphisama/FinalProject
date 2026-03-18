@@ -70,15 +70,15 @@
             }
 
             products.forEach(p => {
-                let statusText = "ปกติ";
+                let statusText = "มีสินค้า";
                 let rowClass = "";
                 
                 if (p.stock === 0) {
-                    statusText = "หมดสต๊อก!";
+                    statusText = "หมดstock";
                     rowClass = "low-stock"; 
                     outOfStock.push(p.name);
                 } else if (p.stock <= p.min_alert) {
-                    statusText = "ใกล้หมด!";
+                    statusText = "สินค้าใกล้หมด";
                     rowClass = "low-stock"; 
                     lowStock.push(p.name);
                 }
@@ -102,7 +102,7 @@
             if (outOfStock.length > 0) {
                 alertHtml += `
                     <div class="alert-box alert-danger">
-                         <b>สินค้าหมดสต๊อก (กรุณาสั่งเพิ่มด่วน):</b> ${outOfStock.join(', ')}
+                         <b>สินค้าหมดStock กรุณาสั่งเพิ่ม :</b> ${outOfStock.join(', ')}
                     </div>
                 `;
             }
@@ -136,7 +136,7 @@
             });
             
             if (response.ok) {
-                alert('เพิ่มสินค้าสำเร็จ!');
+                alert('เพิ่มสินค้าสำเร็จ');
                 document.getElementById('newName').value = ''; 
                 loadProducts(); 
             } else {
@@ -153,7 +153,7 @@
         const type = document.getElementById('txType').value;
         const quantity = document.getElementById('txQty').value;
 
-        if (!product_id || !quantity) return alert('กรุณากรอก ID สินค้า และ จำนวน');
+        if (!product_id || !quantity) return alert('กรุณากรอก ID สินค้าและจำนวนสินค้า');
 
         try {
             const response = await fetch(`${API_URL}/transactions`, {
@@ -164,7 +164,7 @@
             
             const result = await response.json();
             if (response.ok) {
-                alert('อัปเดตสต๊อกสำเร็จ!');
+                alert('อัปเดตสต๊อกสำเร็จ');
                 document.getElementById('txQty').value = ''; 
                 loadProducts(); 
             } else {

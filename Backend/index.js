@@ -24,7 +24,7 @@ const initMySQL = async () => {
     }
 }
 
-//GET ดึงสินค้า
+//GET รับสินค้า
 app.get('/api/products', async (req, res) => {
     try {
         const [results] = await conn.query('SELECT * FROM products');
@@ -35,7 +35,7 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-//GET ดึงข้อมูลสินค้าตาม Id
+//GET รับข้อมูลสินค้าตามเลข Id
 app.get('/api/products/:id', async (req, res) => {
     try {
         let id = req.params.id;
