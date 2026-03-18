@@ -8,12 +8,12 @@
 <body>
 
 <div class="container">
-    <h1>📦 ระบบจัดการสต๊อกสินค้า</h1>
+    <h1>ระบบจัดการสต๊อกสินค้า</h1>
 
     <div id="notificationArea"></div>
 
     <div class="form-group">
-        <h2>➕ เพิ่มสินค้าใหม่</h2>
+        <h2> เพิ่มสินค้าใหม่</h2>
         <input type="text" id="newName" placeholder="ชื่อสินค้า (เช่น หน้าจอ)">
         <input type="number" id="newStock" placeholder="สต๊อกเริ่มต้น" value="0" style="width: 100px;">
         <input type="number" id="newMinAlert" placeholder="เตือนเมื่อเหลือ" value="5" style="width: 100px;">
@@ -31,7 +31,7 @@
         <button class="btn-tx" onclick="addTransaction()">บันทึกรายการ</button>
     </div>
 
-    <h2>📋 รายการสินค้าคงเหลือ</h2>
+    <h2>รายการสินค้าคงเหลือ</h2>
     <table>
         <thead>
             <tr>
@@ -109,7 +109,7 @@
             if (lowStock.length > 0) {
                 alertHtml += `
                     <div class="alert-box alert-warning">
-                        ⚠️ <b>สินค้าใกล้หมด:</b> ${lowStock.join(', ')}
+                        <b>สินค้าใกล้หมด:</b> ${lowStock.join(', ')}
                     </div>
                 `;
             }
