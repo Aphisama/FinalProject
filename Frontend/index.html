@@ -146,7 +146,7 @@
             if (lowStock.length > 0) {
                 alertHtml += `
                     <div class="alert-box alert-warning">
-                        ⚠️ <b>สินค้าใกล้หมด :</b> ${lowStock.join(', ')}
+                        <b>สินค้าใกล้หมด :</b> ${lowStock.join(', ')}
                     </div>
                 `;
             }
@@ -201,8 +201,8 @@
                 const dateStr = txDate.toLocaleString('th-TH'); 
                 
                 const typeHtml = t.type === 'IN' 
-                    ? '<span style="color: #28a745; font-weight: bold;">🟢 รับเข้า</span>'
-                    : '<span style="color: #dc3545; font-weight: bold;">🔴 เบิกออก</span>';
+                    ? '<span style="color: #28a745; font-weight: bold;">รับเข้า</span>'
+                    : '<span style="color: #dc3545; font-weight: bold;">เบิกออก</span>';
 
                 const pName = t.product_name || `รหัสสินค้า ${t.product_id}`;
 
